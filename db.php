@@ -1,13 +1,11 @@
 <?php
-	
 	include 'config.php';
 
-	class DB
-	{
-		public static $pdo;
+	class DB{
+		public static $pdo = null;
 		public static function connection()
 		{
-			if(!isset(self::$pdo))
+			if(self::$pdo === null)
 			{
 				try
 				{
@@ -15,16 +13,18 @@
 				}
 				catch(PDOException $e)
 				{
-					echo $e->getMessage();
+					echo "Connection failed: ".$e->getMessage();
 				}
 			}
 			return self::$pdo;
 		}
-
 		public static function prepare($sql)
 		{
 			return self::connection()->prepare($sql);
 		}
+		public static function lastInsertId()
+		{
+			return self::connection()->lastInsertId();
+		}
 	}
-
 ?>
